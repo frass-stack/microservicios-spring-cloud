@@ -42,12 +42,12 @@ public class ProductoController {
 		//}
 		
 		//Simulamos latencia
-		try {
-			Thread.sleep(2000L);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		//try {
+		//	Thread.sleep(2000L);
+		//} catch (InterruptedException e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
 		
 		return producto;
 	}
