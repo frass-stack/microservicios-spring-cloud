@@ -34,6 +34,21 @@ public class ProductoController {
 	public Producto detalle(@PathVariable Long id){
 		Producto producto = productoService.findById(id);
 		producto.setPort(port);
+		
+		//Simulamos un error para probar Hystrix
+		//boolean ok = false;
+		//if(!ok) {
+		//	throw new RuntimeException("No se pudo cargar el producto");
+		//}
+		
+		//Simulamos latencia
+		try {
+			Thread.sleep(2000L);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return producto;
 	}
 }
