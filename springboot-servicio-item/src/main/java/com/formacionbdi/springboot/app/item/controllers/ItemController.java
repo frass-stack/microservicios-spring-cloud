@@ -32,7 +32,7 @@ public class ItemController {
 	private static Logger log = LoggerFactory.getLogger(ItemController.class);
 	
 	@Autowired
-	@Qualifier("serviceRestTemplate")
+	@Qualifier("serviceFeign")
 	private ItemService itemService;
 	
 	@Autowired
