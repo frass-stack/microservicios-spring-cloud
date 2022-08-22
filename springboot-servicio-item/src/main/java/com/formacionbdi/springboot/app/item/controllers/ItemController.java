@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class ItemController {
 	@Autowired
 	@Qualifier("serviceFeign")
 	private ItemService itemService;
+
+	@Autowired
+	private Environment env;
 	
 	@GetMapping("/listar")
 	public List<Item> listar(){
@@ -59,6 +63,11 @@ public class ItemController {
 		Map<String, String> json = new HashMap();
 		json.put("texto", texto);
 		json.put("puerto", puerto);
+
+		if(env.getActiveProfiles().length>0 && env.getActiveProfiles()[0].equals("dev")) {
+			json.put("autor.nombre", env.getProperty("configuracion.autor.nombre"));
+			json.put("autor.email", env.getProperty("configuracion.autor.email"));
+		}
 		
 		return new ResponseEntity<Map<String, String>>(json, HttpStatus.OK);
 	}
