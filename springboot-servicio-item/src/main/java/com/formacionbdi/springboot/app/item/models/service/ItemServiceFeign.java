@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.formacionbdi.springboot.app.item.clientes.ProductoClienteRest;
 import com.formacionbdi.springboot.app.item.models.Item;
+import com.formacionbdi.springboot.app.commons.models.entity.Producto;
 
 @Service("serviceFeign")
 public class ItemServiceFeign implements ItemService {
@@ -17,7 +18,7 @@ public class ItemServiceFeign implements ItemService {
 
 	@Override
 	public List<Item> findAll() {
-		return clienteFeign.listar().stream().map(p -> new Item(p,1)).collect(Collectors.toList());
+		return clienteFeign.listar().stream().map(p -> new Item(p, 1)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -39,6 +40,4 @@ public class ItemServiceFeign implements ItemService {
 	public void delete(Long id) {
 		clienteFeign.eliminar(id);
 	}
-
-
 }

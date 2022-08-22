@@ -1,5 +1,7 @@
 package com.formacionbdi.springboot.app.item.models;
 
+import com.formacionbdi.springboot.app.commons.models.entity.Producto;
+
 public class Item {
 
 	private Producto producto;
@@ -28,9 +30,9 @@ public class Item {
 	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
-
-    public Double getTotal() {
-        return producto.getPrecio() * cantidad.doubleValue();
+	
+	public Double getTotal() {
+		return producto.getPrecio() * cantidad.doubleValue();
 	}
 
 }
