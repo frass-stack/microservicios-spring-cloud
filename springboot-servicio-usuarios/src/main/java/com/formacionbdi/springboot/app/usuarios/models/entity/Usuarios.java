@@ -29,6 +29,12 @@ public class Usuario implements Serializable {
 	
 	@Column(unique = true, length = 100)
 	private String email;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuarios_to_roles", joinColumns = @JoinColumn(name = "usuario_id"), 
+	inverseJoinColumns = @JoinColumn(name = "role_id"),
+	uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id", "role_id"})})
+	private List<Role> roles;
 	
 	
 	public Long getId() {
@@ -85,6 +91,14 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	private static final long serialVersionUID = 4002221912401133094L;
