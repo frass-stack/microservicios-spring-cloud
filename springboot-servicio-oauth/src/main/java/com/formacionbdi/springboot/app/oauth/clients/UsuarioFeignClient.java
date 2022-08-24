@@ -9,7 +9,7 @@ import com.formacionbdi.springboot.app.commons.usuarios.models.entity.Usuario;
 @FeignClient(name = "servicio-usuarios")
 public interface UsuarioFeignClient {
 	
-	@GetMapping("/usuarios/usuarios/search/buscar-username")
+	@GetMapping("/usuarios/search/buscar-username")
 	public Usuario findByUsername(@RequestParam String username);
 	
 }
