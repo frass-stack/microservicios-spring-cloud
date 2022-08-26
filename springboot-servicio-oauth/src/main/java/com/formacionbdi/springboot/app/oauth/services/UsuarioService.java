@@ -17,30 +17,35 @@ import org.springframework.stereotype.Service;
 import com.formacionbdi.springboot.app.commons.usuarios.models.entity.Usuario;
 import com.formacionbdi.springboot.app.oauth.clients.UsuarioFeignClient;
 
+import feign.FeignException;
+
 @Service
 public class UsuarioService implements IUsuarioService {
 
 	private Logger log = LoggerFactory.getLogger(UsuarioService.class);
-	
+
 	@Autowired
 	private UsuarioFeignClient client;
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario usuario = client.findByUsername(username);
-		
-		if(usuario == null) {
+
+		try {
+			Usuario usuario = client.findByUsername(username);
+
+			List<GrantedAuthority> authorities = usuario.getRoles().stream()
+					.peek(authority -> log.info("role: " + authority.getNombre()))
+					.map(role -> new SimpleGrantedAuthority(role.getNombre())).collect(Collectors.toList());
+			log.info("Usuario autenticado: " + username);
+
+			return new User(usuario.getNombre(), usuario.getPassword(), usuario.getEnabled(), true, true, true,
+					authorities);
+
+		} catch (FeignException e) {
 			log.error("Error en el login, no existe el usuario '" + username + "' en el sistema");
-			throw new UsernameNotFoundException("Error en el login, no existe el usuario '" + username + "' en el sistema");
+			throw new UsernameNotFoundException(
+					"Error en el login, no existe el usuario '" + username + "' en el sistema");
 		}
-		
-		List<GrantedAuthority> authorities = usuario.getRoles()
-				.stream()
-				.peek(authority -> log.info("role: " + authority.getNombre()))
-				.map(role -> new SimpleGrantedAuthority(role.getNombre())).collect(Collectors.toList());
-		log.info("Usuario autenticado: " + username);
-		
-		return new User(usuario.getNombre(), usuario.getPassword(), usuario.getEnabled(), true, true, true, authorities);
 	}
 
 	@Override
