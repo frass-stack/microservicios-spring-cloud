@@ -18,7 +18,7 @@ import com.formacionbdi.springboot.app.commons.usuarios.models.entity.Usuario;
 import com.formacionbdi.springboot.app.oauth.clients.UsuarioFeignClient;
 
 @Service
-public class UsuarioService implements IUsuarioService, UserDetailsService {
+public class UsuarioService implements IUsuarioService {
 
 	private Logger log = LoggerFactory.getLogger(UsuarioService.class);
 	
@@ -46,6 +46,11 @@ public class UsuarioService implements IUsuarioService, UserDetailsService {
 	@Override
 	public Usuario findByUsername(String username) {
 		return client.findByUsername(username);
+	}
+
+	@Override
+	public Usuario update(Usuario usuario, Long id) {
+		return client.update(usuario, id);
 	}
 
 }
